@@ -3,97 +3,139 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
 
-    const navigate = useNavigate();
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const submitHandler = async (e) => {
+    const navigate = useNavigate();
 
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(
-            "http://localhost:5000/api/auth/login",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    email,
-                    password
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if (response.ok) {
-
-            localStorage.setItem("token", data.token);
-            localStorage.setItem(
-                "user",
-                JSON.stringify(data.user)
+        try {
+            const response = await fetch(
+                "http://localhost:5000/api/auth/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                }
             );
+
+            const data = await response.json();
+
+            console.log("Login response:", data);
+
+            if (!response.ok) {
+                alert(data.message || "Login failed");
+                return;
+            }
+
+            // Save JWT token
+            if (data.token) {
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
+            }
+
+            // Save user information if returned
+            if (data.user) {
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(data.user)
+                );
+            }
+
+            alert("Login successful!");
 
             navigate("/");
 
-        } else {
+        } catch (error) {
 
-            alert(data.message);
+            console.error(
+                "Login error:",
+                error
+            );
 
+            alert(
+                "Cannot connect to server. Make sure backend is running on port 5000."
+            );
         }
     };
 
     return (
+
         <div className="auth-page">
 
-            <form
-                className="auth-card"
-                onSubmit={submitHandler}
-            >
+            <div className="auth-card">
 
-                <h1>Welcome Back</h1>
-
-                <p>Login to your ShopSphere account</p>
-
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(e.target.value)
-                    }
-                    required
-                />
-
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                    required
-                />
-
-                <button
-                    type="submit"
-                    className="primary-button"
-                >
-                    Login
-                </button>
-
-                <p>
-                    Don't have an account?
-                    <Link to="/register">
-                        Register
-                    </Link>
+                <p className="section-label">
+                    WELCOME BACK
                 </p>
 
-            </form>
+                <h1>
+                    Login
+                </h1>
+
+                <p className="auth-subtitle">
+                    Sign in to your ShopSphere account.
+                </p>
+
+                <form onSubmit={handleSubmit}>
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) =>
+                            setEmail(e.target.value)
+                        }
+                        required
+                    />
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) =>
+                            setPassword(e.target.value)
+                        }
+                        required
+                    />
+
+                    <button
+                        type="submit"
+                        className="primary-button auth-button"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+                <p className="auth-footer">
+
+                    Don't have an account?{" "}
+
+                    <Link to="/register">
+                        Create one
+                    </Link>
+
+                </p>
+
+            </div>
 
         </div>
     );

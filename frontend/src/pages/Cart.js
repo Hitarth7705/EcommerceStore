@@ -1,16 +1,14 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import { CartContext } from "../context/CartContext";
 
 function Cart() {
 
     const {
         cart,
-        removeFromCart,
-        updateQuantity
+        removeFromCart
     } = useContext(CartContext);
-
-    const navigate = useNavigate();
 
     const total = cart.reduce(
         (sum, item) =>
@@ -21,12 +19,16 @@ function Cart() {
     if (cart.length === 0) {
 
         return (
+
             <div className="empty-cart">
 
-                <h1>Your cart is empty</h1>
+                <h1>
+                    Your Cart is Empty
+                </h1>
 
                 <p>
-                    Add some products to continue shopping.
+                    Looks like you haven't added
+                    anything yet.
                 </p>
 
                 <Link
@@ -37,21 +39,46 @@ function Cart() {
                 </Link>
 
             </div>
+
         );
+
     }
 
     return (
+
         <div className="cart-page">
 
-            <h1>Your Shopping Cart</h1>
+            <div className="cart-header">
+
+                <div>
+
+                    <p className="section-label">
+                        SHOPPING CART
+                    </p>
+
+                    <h1>
+                        Your Cart
+                    </h1>
+
+                </div>
+
+                <Link to="/">
+                    Continue Shopping
+                </Link>
+
+            </div>
+
 
             <div className="cart-layout">
 
                 <div className="cart-items">
 
-                    {cart.map((item) => (
+                    {cart.map(item => (
 
-                        <div className="cart-item" key={item._id}>
+                        <div
+                            className="cart-item"
+                            key={item._id}
+                        >
 
                             <img
                                 src={item.image}
@@ -60,47 +87,34 @@ function Cart() {
 
                             <div className="cart-item-info">
 
-                                <h3>{item.name}</h3>
+                                <span className="category">
+                                    {item.category}
+                                </span>
+
+                                <h3>
+                                    {item.name}
+                                </h3>
 
                                 <p>
-                                    ₹{item.price.toLocaleString("en-IN")}
+                                    Quantity:{" "}
+                                    {item.quantity}
                                 </p>
 
-                                <div className="quantity">
-
-                                    <button
-                                        onClick={() =>
-                                            updateQuantity(
-                                                item._id,
-                                                item.quantity - 1
-                                            )
-                                        }
-                                    >
-                                        -
-                                    </button>
-
-                                    <span>
-                                        {item.quantity}
-                                    </span>
-
-                                    <button
-                                        onClick={() =>
-                                            updateQuantity(
-                                                item._id,
-                                                item.quantity + 1
-                                            )
-                                        }
-                                    >
-                                        +
-                                    </button>
-
-                                </div>
+                                <strong>
+                                    ₹
+                                    {(
+                                        item.price *
+                                        item.quantity
+                                    ).toLocaleString("en-IN")}
+                                </strong>
 
                                 <button
-                                    className="remove-button"
                                     onClick={() =>
-                                        removeFromCart(item._id)
+                                        removeFromCart(
+                                            item._id
+                                        )
                                     }
+                                    className="remove-button"
                                 >
                                     Remove
                                 </button>
@@ -113,45 +127,74 @@ function Cart() {
 
                 </div>
 
+
                 <div className="cart-summary">
 
-                    <h2>Order Summary</h2>
+                    <h2>
+                        Order Summary
+                    </h2>
 
-                    <div>
-                        <span>Subtotal</span>
+                    <div className="summary-row">
 
-                        <strong>
-                            ₹{total.toLocaleString("en-IN")}
-                        </strong>
+                        <span>
+                            Items
+                        </span>
+
+                        <span>
+                            {cart.reduce(
+                                (sum, item) =>
+                                    sum + item.quantity,
+                                0
+                            )}
+                        </span>
+
                     </div>
 
-                    <div>
-                        <span>Shipping</span>
-                        <strong>FREE</strong>
+                    <div className="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹
+                            {total.toLocaleString(
+                                "en-IN"
+                            )}
+                        </strong>
+
                     </div>
 
                     <hr />
 
-                    <div className="total">
-                        <span>Total</span>
+                    <div className="summary-total">
+
+                        <span>
+                            Total
+                        </span>
 
                         <strong>
-                            ₹{total.toLocaleString("en-IN")}
+                            ₹
+                            {total.toLocaleString(
+                                "en-IN"
+                            )}
                         </strong>
+
                     </div>
 
-                    <button
-                        className="primary-button full"
-                        onClick={() => navigate("/checkout")}
+                    <Link
+                        to="/checkout"
+                        className="primary-button checkout-button"
                     >
                         Proceed to Checkout
-                    </button>
+                    </Link>
 
                 </div>
 
             </div>
 
         </div>
+
     );
 }
 

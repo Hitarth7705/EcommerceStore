@@ -2,26 +2,45 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
+
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState("");
 
     useEffect(() => {
+
         fetch("http://localhost:5000/api/products")
-            .then((res) => res.json())
-            .then((data) => setProducts(data))
-            .catch((error) => console.error(error));
+            .then(response => response.json())
+            .then(data => {
+                setProducts(data);
+            })
+            .catch(error => {
+                console.error(
+                    "Error loading products:",
+                    error
+                );
+            });
+
     }, []);
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredProducts =
+        products.filter(product =>
+            product.name
+                .toLowerCase()
+                .includes(search.toLowerCase())
+        );
 
     return (
-        <div className="home">
+        <div>
+
+            {/* HERO */}
 
             <section className="hero">
-                <div>
-                    <p className="hero-small">WELCOME TO SHOPSPHERE</p>
+
+                <div className="hero-content">
+
+                    <p className="hero-label">
+                        WELCOME TO SHOPSPHERE
+                    </p>
 
                     <h1>
                         Everything you need.
@@ -29,38 +48,59 @@ function Home() {
                         All in one place.
                     </h1>
 
-                    <p>
-                        Discover premium products at great prices.
+                    <p className="hero-description">
+                        Discover premium products
+                        at great prices.
                     </p>
 
-                    <a href="#products" className="hero-button">
+                    <a
+                        href="#products"
+                        className="hero-button"
+                    >
                         Shop Now
                     </a>
+
                 </div>
+
             </section>
 
-            <section className="products-section" id="products">
+
+            {/* PRODUCTS */}
+
+            <section
+                className="products-section"
+                id="products"
+            >
 
                 <div className="section-header">
+
                     <div>
+
                         <p className="section-label">
                             OUR COLLECTION
                         </p>
 
-                        <h2>Featured Products</h2>
+                        <h2>
+                            Featured Products
+                        </h2>
+
                     </div>
 
                     <input
                         type="text"
                         placeholder="Search products..."
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(event) =>
+                            setSearch(event.target.value)
+                        }
                     />
+
                 </div>
+
 
                 <div className="product-grid">
 
-                    {filteredProducts.map((product) => (
+                    {filteredProducts.map(product => (
 
                         <Link
                             to={`/product/${product._id}`}
@@ -69,10 +109,12 @@ function Home() {
                         >
 
                             <div className="product-image">
+
                                 <img
                                     src={product.image}
                                     alt={product.name}
                                 />
+
                             </div>
 
                             <div className="product-info">
@@ -81,14 +123,22 @@ function Home() {
                                     {product.category}
                                 </span>
 
-                                <h3>{product.name}</h3>
+                                <h3>
+                                    {product.name}
+                                </h3>
 
                                 <div className="rating">
                                     ★ {product.rating}
+                                    <span>
+                                        ({product.numReviews})
+                                    </span>
                                 </div>
 
                                 <strong>
-                                    ₹{product.price.toLocaleString("en-IN")}
+                                    ₹
+                                    {product.price.toLocaleString(
+                                        "en-IN"
+                                    )}
                                 </strong>
 
                             </div>
@@ -98,6 +148,14 @@ function Home() {
                     ))}
 
                 </div>
+
+                {filteredProducts.length === 0 && (
+
+                    <div className="no-products">
+                        No products found.
+                    </div>
+
+                )}
 
             </section>
 
