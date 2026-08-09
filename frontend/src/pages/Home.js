@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import API from "../api";
 function Home() {
 
     const [products, setProducts] = useState([]);
@@ -8,7 +8,7 @@ function Home() {
 
     useEffect(() => {
 
-        fetch("http://localhost:5000/api/products")
+        fetch(`${API}/api/products`)
             .then(response => response.json())
             .then(data => {
                 setProducts(data);

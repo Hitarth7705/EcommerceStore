@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import { CartContext } from "../context/CartContext";
-
+import API from "../api";
 function ProductDetails() {
 
     const { id } = useParams();
@@ -29,7 +29,7 @@ function ProductDetails() {
     useEffect(() => {
 
         fetch(
-            `http://localhost:5000/api/products/${id}`
+            `${API}/api/products/${id}`
         )
             .then(response => response.json())
             .then(data => {

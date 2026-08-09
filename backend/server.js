@@ -13,7 +13,12 @@ const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://qevanta.onrender.com"
+    ]
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import API from "../api";
 function Register() {
 
     const [name, setName] = useState("");
@@ -11,7 +11,7 @@ function Register() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/auth/register",
+                 `${API}/api/auth/register`,
                 {
                     method: "POST",
                     headers: {
@@ -42,8 +42,8 @@ function Register() {
             console.error(error);
 
             alert(
-                "Cannot connect to server. Make sure backend is running on port 5000."
-            );
+    "Cannot connect to the server. Please try again."
+);
         }
     };
 

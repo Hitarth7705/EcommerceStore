@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import API from "../api";
 function Admin() {
 
     const [products, setProducts] = useState([]);
@@ -18,7 +18,7 @@ function Admin() {
     const loadProducts = async () => {
 
         const response = await fetch(
-            "http://localhost:5000/api/products"
+           `${API}/api/products`
         );
 
         const data = await response.json();
@@ -35,7 +35,7 @@ function Admin() {
         e.preventDefault();
 
         const response = await fetch(
-            "http://localhost:5000/api/products",
+            `${API}/api/products`,
             {
                 method: "POST",
 
@@ -82,7 +82,7 @@ function Admin() {
         }
 
         const response = await fetch(
-            `http://localhost:5000/api/products/${id}`,
+            `${API}/api/products/${id}`,
             {
                 method: "DELETE",
 
