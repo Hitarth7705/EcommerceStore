@@ -53,7 +53,7 @@ function Register() {
             <div className="auth-card">
 
                 <p className="section-label">
-                    JOIN SHOPSPHERE
+                    JOIN QEVANTA
                 </p>
 
                 <h1>Create Account</h1>

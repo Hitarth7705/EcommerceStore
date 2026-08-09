@@ -39,7 +39,7 @@ function Home() {
                 <div className="hero-content">
 
                     <p className="hero-label">
-                        WELCOME TO SHOPSPHERE
+                        WELCOME TO QEVANTA
                     </p>
 
                     <h1>

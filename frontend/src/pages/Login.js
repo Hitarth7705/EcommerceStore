@@ -83,7 +83,7 @@ function Login() {
                 </h1>
 
                 <p className="auth-subtitle">
-                    Sign in to your ShopSphere account.
+                    Sign in to your QEVANTA account.
                 </p>
 
                 <form onSubmit={handleSubmit}>

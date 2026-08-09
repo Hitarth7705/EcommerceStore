@@ -62,7 +62,7 @@ function Navbar() {
                 to="/"
                 className="logo"
             >
-                ShopSphere
+                QEVANTA
             </Link>
 
 
