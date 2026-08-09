@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
   res.json({ message: "QEVANTA E-Commerce API is running" });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 connectDB();
 
