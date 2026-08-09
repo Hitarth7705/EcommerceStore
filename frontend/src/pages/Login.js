@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api";
+import { useAuth } from "../context/AuthContext";
 function Login() {
-
+    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
-
+    const { login } = useAuth();
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -34,23 +35,14 @@ function Login() {
                 alert(data.message || "Login failed");
                 return;
             }
+            if (data.token && data.user) {
 
-            // Save JWT token
-            if (data.token) {
-                localStorage.setItem(
-                    "token",
+                login(
+                    data.user,
                     data.token
                 );
-            }
 
-            // Save user information if returned
-            if (data.user) {
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
-                );
             }
-
             alert("Login successful!");
 
             navigate("/");

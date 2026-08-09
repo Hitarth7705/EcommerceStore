@@ -1,52 +1,47 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Profile() {
 
-    const [user, setUser] = useState(null);
+    const { user, logout, loading } = useAuth();
 
     const navigate = useNavigate();
 
+    // Redirect to login if user is not logged in
     useEffect(() => {
 
-        const token = localStorage.getItem("token");
-        const storedUser = localStorage.getItem("user");
-
-        // User is not logged in
-        if (!token || !storedUser) {
-            navigate("/login");
-            return;
-        }
-
-        try {
-            setUser(JSON.parse(storedUser));
-        } catch (error) {
-            console.error("Invalid user data");
-
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-
+        if (!loading && !user) {
             navigate("/login");
         }
 
-    }, [navigate]);
+    }, [user, loading, navigate]);
 
 
     const handleLogout = () => {
 
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        logout();
 
         navigate("/login");
+
     };
 
 
-    if (!user) {
+    // While checking authentication
+    if (loading) {
+
         return (
             <div className="profile-loading">
                 Loading profile...
             </div>
         );
+
+    }
+
+
+    // If there is no user
+    if (!user) {
+        return null;
     }
 
 
@@ -63,9 +58,7 @@ function Profile() {
                     <div className="profile-avatar">
 
                         {user.name
-                            ? user.name
-                                .charAt(0)
-                                .toUpperCase()
+                            ? user.name.charAt(0).toUpperCase()
                             : "U"
                         }
 
@@ -97,6 +90,7 @@ function Profile() {
                     <div className="profile-card-header">
 
                         <div>
+
                             <p className="section-label">
                                 ACCOUNT
                             </p>
@@ -104,6 +98,7 @@ function Profile() {
                             <h2>
                                 Personal Information
                             </h2>
+
                         </div>
 
                     </div>
@@ -239,6 +234,7 @@ function Profile() {
         </div>
 
     );
+
 }
 
 export default Profile;

@@ -3,7 +3,7 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-
+import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 
 import Home from "./pages/Home";
@@ -16,52 +16,55 @@ import { CartProvider } from "./context/CartContext";
 import Profile from "./pages/Profile";
 
 import "./App.css";
-
 function App() {
 
     return (
 
         <BrowserRouter>
 
-            <CartProvider>
+            <AuthProvider>
 
-                <Navbar />
+                <CartProvider>
 
-                <Routes>
+                    <Navbar />
 
-                    <Route
-                        path="/"
-                        element={<Home />}
-                    />
+                    <Routes>
 
-                    <Route
-                        path="/product/:id"
-                        element={<ProductDetails />}
-                    />
+                        <Route
+                            path="/"
+                            element={<Home />}
+                        />
 
-                    <Route
-                        path="/login"
-                        element={<Login />}
-                    />
+                        <Route
+                            path="/product/:id"
+                            element={<ProductDetails />}
+                        />
 
-                    <Route
-                        path="/profile"
-                        element={<Profile />}
-                    />
-                    
-                    <Route
-                        path="/register"
-                        element={<Register />}
-                    />
+                        <Route
+                            path="/login"
+                            element={<Login />}
+                        />
 
-                    <Route
-                        path="/cart"
-                        element={<Cart />}
-                    />
+                        <Route
+                            path="/profile"
+                            element={<Profile />}
+                        />
 
-                </Routes>
+                        <Route
+                            path="/register"
+                            element={<Register />}
+                        />
 
-            </CartProvider>
+                        <Route
+                            path="/cart"
+                            element={<Cart />}
+                        />
+
+                    </Routes>
+
+                </CartProvider>
+
+            </AuthProvider>
 
         </BrowserRouter>
 
