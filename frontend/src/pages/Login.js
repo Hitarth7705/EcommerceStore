@@ -13,6 +13,13 @@ function Login() {
         e.preventDefault();
 
         try {
+
+            console.log("API URL:", API);
+            console.log(
+                "Login URL:",
+                `${API}/api/auth/login`
+            );
+
             const response = await fetch(
                 `${API}/api/auth/login`,
                 {
